@@ -29,12 +29,11 @@ def poll_mail() -> BatchInfo:
                 #메세지 파싱
                 batch_info = parse_subject(subject)
                 if batch_info.check():
-                    logger.info(f"===Starting new job===")
+                    logger.info(f"===find new job===")
                     client.add_flags(uid,[r'\Seen'])
                     client.add_flags(uid,[r'\Deleted'])
-                    merge_excels_preserve(INPUT_DIR,OUTPUT_DIR)
                     #client.expunge()
-                    return  batch_info
+                    return batch_info
     return None
 
 def parse_subject(subject : str) -> BatchInfo:

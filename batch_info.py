@@ -35,3 +35,6 @@ class BatchInfo:
     
     def __str__(self):
         return f"[{self.job_name}],[{self.status.value}],[{self.timestamp}]"
+    
+    def set_status_to_fail(self):
+        self.status = BatchStatus.FAIL
