@@ -4,7 +4,9 @@ import pandas as pd
 from copy import copy
 from openpyxl import load_workbook, Workbook
 from config import *
+from logger import get_logger
 
+logger = get_logger(__name__)
 
 def copy_sheet(src_ws, tgt_wb, title):
     """
@@ -97,7 +99,7 @@ def merge_excels_preserve(input_dir, output_dir):
     excel_files = glob.glob(pattern)
 
     if not excel_files:
-        print("No Excel files found in", input_dir)
+        logger.info("No Excel files found in", input_dir)
         return
 
     out_wb = Workbook()
@@ -114,10 +116,8 @@ def merge_excels_preserve(input_dir, output_dir):
         copy_sheet(src_ws, out_wb, base_name)
 
     out_wb.save(output_file)
-    print(f"Merged {len(excel_files)} files into {output_file}")
+    logger.info(f"Merged {len(excel_files)} files into {output_file}")
     
-    delete_all_file(input_dir)
-
 def delete_all_file(dir : str):
     for filename in os.listdir(dir):
         file_path = os.path.join(dir, filename)

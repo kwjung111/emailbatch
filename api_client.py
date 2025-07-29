@@ -11,6 +11,7 @@ def upload_file(filepath):
     try:
         with open(filepath, 'rb') as f:
             files = {'file_dict_vendor': f}
+            logger.info(f"Upload Start")
             response = requests.post(url,files=files)
             
 

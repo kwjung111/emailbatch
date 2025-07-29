@@ -12,5 +12,7 @@ if __name__ == '__main__':
         if poll_result:
                 file = pattern = os.path.join(OUTPUT_DIR, "merged.xlsx")
                 merge_excels_preserve(INPUT_DIR,OUTPUT_DIR)
+                delete_all_file(INPUT_DIR)
                 if upload_file(file):
                         send(f"batch finished",{poll_result.status})
+                
