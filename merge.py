@@ -105,6 +105,7 @@ def merge_excels_preserve(input_dir, output_dir):
     out_wb = Workbook()
     out_wb.remove(out_wb.active)  # 기본 시트 제거
 
+    logger.info(f"=== Start to merge files===")
     for file in excel_files:
         # 파일명(확장자 제외)을 시트명으로 사용 (최대 31자)
         base_name = os.path.splitext(os.path.basename(file))[0][:31]
@@ -114,6 +115,7 @@ def merge_excels_preserve(input_dir, output_dir):
         # 첫 번째 시트만 복사
         src_ws = src_wb.worksheets[0]
         copy_sheet(src_ws, out_wb, base_name)
+        logger.info(f"Copy finished : {base_name} ")
 
     out_wb.save(output_file)
     logger.info(f"Merged {len(excel_files)} files into {output_file}")
