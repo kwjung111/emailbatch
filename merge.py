@@ -99,7 +99,7 @@ def merge_excels_preserve(input_dir, output_dir):
     excel_files = glob.glob(pattern)
 
     if not excel_files:
-        logger.info("No Excel files found in", input_dir)
+        logger.info(f"No Excel files found in : {input_dir}")
         return
 
     out_wb = Workbook()
