@@ -9,3 +9,6 @@ OUTPUT_DIR = r"dir"
 
 #email 
 RECV = [""]
+
+#upload
+UPLOAD_URL = ""

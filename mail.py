@@ -10,7 +10,7 @@ from batch_info import BatchInfo,BatchStatus
 
 logger = get_logger(__name__)
 
-def poll_mail():
+def poll_mail() -> bool:
     with IMAPClient(HOST, ssl=True) as client:
         client.login(USER,PASS)
         client.select_folder('INBOX')
@@ -34,6 +34,8 @@ def poll_mail():
                     #merge_excels_preserve(INPUT_DIR,OUTPUT_DIR)
                     #client.expunge()
                     send("batch",batch_info.status.value)
+                    return True
+    return False
 
 def parse_subject(subject : str) -> BatchInfo:
     matches = re.findall(r'\[(.*?)\]', subject)
