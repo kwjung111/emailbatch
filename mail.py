@@ -7,10 +7,11 @@ from config import *
 from logger import get_logger
 from email.header import decode_header
 from batch_info import BatchInfo,BatchStatus
+from merge import merge_excels_preserve
 
 logger = get_logger(__name__)
 
-def poll_mail() -> bool:
+def poll_mail() -> BatchInfo:
     with IMAPClient(HOST, ssl=True) as client:
         client.login(USER,PASS)
         client.select_folder('INBOX')
@@ -29,13 +30,12 @@ def poll_mail() -> bool:
                 batch_info = parse_subject(subject)
                 if batch_info.check():
                     logger.info(f"===Starting new job===")
-                    #client.add_flags(uid,[r'\Seen'])
-                    #client.add_flags(uid,[r'\Deleted'])
-                    #merge_excels_preserve(INPUT_DIR,OUTPUT_DIR)
+                    client.add_flags(uid,[r'\Seen'])
+                    client.add_flags(uid,[r'\Deleted'])
+                    merge_excels_preserve(INPUT_DIR,OUTPUT_DIR)
                     #client.expunge()
-                    send("batch",batch_info.status.value)
-                    return True
-    return False
+                    return  batch_info
+    return None
 
 def parse_subject(subject : str) -> BatchInfo:
     matches = re.findall(r'\[(.*?)\]', subject)

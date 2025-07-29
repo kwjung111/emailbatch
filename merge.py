@@ -91,8 +91,9 @@ def merge_csv_files(input_dir,output_file):
         
     delete_all_file(input_dir)
 
-def merge_excels_preserve(input_dir, output_file):
+def merge_excels_preserve(input_dir, output_dir):
     pattern = os.path.join(input_dir, "*.xlsx")
+    output_file = os.path.join(output_dir,'merge.xlsx')
     excel_files = glob.glob(pattern)
 
     if not excel_files:
