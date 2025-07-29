@@ -28,8 +28,8 @@ class BatchInfo:
     def check(self) -> bool:
         if self.job_name != JOB_NAME:
             return False
-        #if self.status != BatchStatus.SUCCESS:
-        #    return False
+        if self.status != BatchStatus.SUCCESS:
+            return False
         
         return True
     
