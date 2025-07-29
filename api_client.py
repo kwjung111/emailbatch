@@ -12,4 +12,4 @@ def upload_file(filepath):
         files = {'file_dict_vendor': f}
         response = requests.post(url,files=files)
         
-    logger.log(f"Response Code : {response.status_code}, Text : {response.text}")
+    logger.info(f"Response Code : {response.status_code}, Text : {response.text}")

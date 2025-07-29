@@ -26,9 +26,12 @@ class BatchInfo:
     timestamp : str
     
     def check(self) -> bool:
-        if self.job_name == JOB_NAME:
-            return True
-        return False
+        if self.job_name != JOB_NAME:
+            return False
+        #if self.status != BatchStatus.SUCCESS:
+        #    return False
+        
+        return True
     
     def __str__(self):
         return f"[{self.job_name}],[{self.status.value}],[{self.timestamp}]"
