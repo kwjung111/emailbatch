@@ -28,7 +28,7 @@ def poll_mail():
                 #메세지 파싱
                 batch_info = parse_subject(subject)
                 if batch_info.check():
-                    logger.info(f"배치 감지됨. 작업 시작합니다.")
+                    logger.info(f"===Starting new job===")
                     #client.add_flags(uid,[r'\Seen'])
                     #client.add_flags(uid,[r'\Deleted'])
                     #merge_excels_preserve(INPUT_DIR,OUTPUT_DIR)
@@ -41,10 +41,10 @@ def parse_subject(subject : str) -> BatchInfo:
         job_name, status, timestamp = matches
         batch_status = BatchStatus.from_str(status)
         batch = BatchInfo(job_name,batch_status,timestamp)
-        logger.info(f"배치 정보 : {batch.__str__()}")
+        logger.info(f"Batch status : {batch.__str__()}")
         return batch
     else:
-        logger.info(f"{subject} : 배치 파일 아님")
+        logger.info(f"{subject} : Not a Batch trigger")
         return None
     
 def send(content,status):
@@ -56,9 +56,8 @@ def send(content,status):
     
     msg = MIMEText(content,'html')
     msg['Subject'] = f"[{status}] : loc sms"
-    recv = ["kwjung@businessinsight.co.kr"]
     
-    for rcv in recv:
+    for rcv in RECV:
         smtp.sendmail(USER,rcv,msg.as_string())
     smtp.quit()
     
