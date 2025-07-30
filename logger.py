@@ -1,8 +1,8 @@
 import logging
 import os
 from logging.handlers import RotatingFileHandler
+from config import LOG_DIR
 
-LOG_DIR = "logs"
 LOG_FILE = "batch.log"
 os.makedirs(LOG_DIR, exist_ok=True)
 

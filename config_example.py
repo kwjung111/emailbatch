@@ -12,3 +12,6 @@ RECV = [""]
 
 #upload
 UPLOAD_URL = ""
+
+#Log directory
+LOG_DIR = "logs"
