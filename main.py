@@ -12,5 +12,5 @@ if __name__ == '__main__':
         batches = poll_mail()
         for batch in batches:
                 batch.run()
-                send(f"batch finished",{batch.status})
+                send(f"batch finished",{batch.status.value})
                 

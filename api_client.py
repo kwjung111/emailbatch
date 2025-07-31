@@ -14,7 +14,6 @@ def upload_file(filepath):
             logger.info(f"Upload Start")
             response = requests.post(url,files=files)
             
-
         if response.status_code == 200:
             logger.info(f"Upload Success. Response Code : {response.status_code}, Text : {response.text}")
             return True
