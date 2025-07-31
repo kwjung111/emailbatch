@@ -1,17 +1,20 @@
 import email
 import smtplib
 import re
+from typing import List
 from email.mime.text import MIMEText
 from imapclient import IMAPClient
 from config import *
 from logger import get_logger
 from email.header import decode_header
-from batch_info import BatchInfo,BatchStatus
-from merge import merge_excels_preserve
+from batches.batch_base import AbstractBatch,BatchStatus
+from batches.batch_factory import BatchFactory
 
 logger = get_logger(__name__)
 
-def poll_mail() -> BatchInfo:
+def poll_mail() -> List[AbstractBatch]:
+    batches : List[AbstractBatch] = []
+    
     with IMAPClient(HOST, ssl=True) as client:
         client.login(USER,PASS)
         client.select_folder('INBOX')
@@ -27,21 +30,22 @@ def poll_mail() -> BatchInfo:
              
                 logger.info(f"New mail : {subject}")
                 #메세지 파싱
-                batch_info = parse_subject(subject)
-                if batch_info.check():
+                batch = parse_subject(subject)
+                # 
+                if batch and batch.validate():
                     logger.info(f"===find new job===")
                     client.add_flags(uid,[r'\Seen'])
                     client.add_flags(uid,[r'\Deleted'])
                     #client.expunge()
-                    return batch_info
-    return None
+                    batches.append(batch)
+    return batches
 
-def parse_subject(subject : str) -> BatchInfo:
+def parse_subject(subject : str) -> AbstractBatch:
     matches = re.findall(r'\[(.*?)\]', subject)
     if matches and len(matches) == 3:
         job_name, status, timestamp = matches
         batch_status = BatchStatus.from_str(status)
-        batch = BatchInfo(job_name,batch_status,timestamp)
+        batch = BatchFactory(job_name,batch_status,timestamp)
         logger.info(f"Batch status : {batch.__str__()}")
         return batch
     else:

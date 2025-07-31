@@ -1,7 +1,6 @@
-from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
-from config import *
+from abc import ABC,abstractmethod
 
 class BatchStatus(Enum):
     SUCCESS = "SUCCESS"
@@ -17,24 +16,29 @@ _alias_map = {
     "SUCCESSFULLY": BatchStatus.SUCCESS,
     "UNSUCCESSFULLY": BatchStatus.FAIL
 }
-    
-    
-@dataclass(frozen=True)
-class BatchInfo:
-    job_name: str
-    status: BatchStatus
-    timestamp : str
-    
-    def check(self) -> bool:
-        if self.job_name != JOB_NAME:
-            return False
-        if self.status != BatchStatus.SUCCESS:
-            return False
         
-        return True
+class AbstractBatch(ABC):
+    job_name:str
+    status: BatchStatus
+    timestamp:str
+
+    def __init__(self,job_name,status,timestamp): 
+        self.job_name = job_name
+        self.status = status
+        self.timestamp = timestamp        
+        
+    @abstractmethod
+    def validate(self) -> bool:
+        pass
     
-    def __str__(self):
+    @abstractmethod
+    def run(self,*args,**kwargs):
+        pass
+    
+    def __str__(self) -> str:
         return f"[{self.job_name}],[{self.status.value}],[{self.timestamp}]"
     
     def set_status_to_fail(self):
         self.status = BatchStatus.FAIL
+        
+        
