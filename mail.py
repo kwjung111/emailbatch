@@ -45,7 +45,7 @@ def parse_subject(subject : str) -> AbstractBatch:
     if matches and len(matches) == 3:
         job_name, status, timestamp = matches
         batch_status = BatchStatus.from_str(status)
-        batch = BatchFactory(job_name,batch_status,timestamp)
+        batch = BatchFactory.create_batch(job_name,batch_status,timestamp)
         logger.info(f"Batch status : {batch.__str__()}")
         return batch
     else:
