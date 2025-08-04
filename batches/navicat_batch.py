@@ -6,7 +6,7 @@ from api_client import upload_file
 
 class NavicatBatch(AbstractBatch):
     def __init__(self,status: BatchStatus, timestamp: str):
-        super().__init__(job_name="automation",
+        super().__init__(job_name="loc_sms",
                          status=status,
                          timestamp=timestamp)
     

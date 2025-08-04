@@ -51,19 +51,23 @@ def parse_subject(subject : str) -> AbstractBatch:
         logger.info(f"{subject} : Not a Batch trigger")
         return None
     
-def send(content,status):
+def send(content,subject):
     gmail_smtp="smtp.gmail.com"
     gmail_port=465
     
-    smtp = smtplib.SMTP_SSL(gmail_smtp,gmail_port)
-    smtp.login(USER,PASS)
+    try:
+        smtp = smtplib.SMTP_SSL(gmail_smtp,gmail_port)
+        smtp.login(USER,PASS)
     
-    msg = MIMEText(content,'html')
-    msg['Subject'] = f"[{status}] : loc sms"
+        msg = MIMEText(content,'html')
+        msg['Subject'] = subject
     
-    for rcv in RECV:
-        smtp.sendmail(USER,rcv,msg.as_string())
-    smtp.quit()
+        for rcv in RECV:
+            smtp.sendmail(USER,rcv,msg.as_string())
+    except Exception as e:
+        logger.error(f"Failed to send mail : {e}")
+    finally:
+        smtp.quit()
     
 if __name__=="__main__":
     content= "aa"
